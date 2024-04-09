@@ -10,6 +10,7 @@ AreaID = NonNegativeInt
 Category = NonEmptyString
 ImageID = NonNegativeInt
 ResponseLimit = PositiveInt
+Embedding = ...
 
 
 class QueryRequest(BaseModel):
