@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, UploadFile, Depends
 
 from app.models.image_query import ImageQueryResponse, ImageQueryRequest
@@ -12,5 +14,5 @@ async def search_by_text(text_query: TextQueryRequest = Depends()) -> TextQueryR
 
 
 @router.put("/image/", response_model=ImageQueryResponse)
-async def search_by_image(image_file: UploadFile, image_query: ImageQueryRequest = Depends()) -> ImageQueryResponse:
+async def search_by_image(image_file: UploadFile, image_query: Annotated[ImageQueryRequest, Depends()]) -> ImageQueryResponse:
     return NotImplemented
