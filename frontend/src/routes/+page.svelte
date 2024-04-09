@@ -7,7 +7,9 @@
     console.log(event.detail);
   }
 
-  export let options: DropdownElem[] = [];
+  export let data: {options: DropdownElem[]};
+
+  $: options = data.options;
 </script>
 
 <main>
