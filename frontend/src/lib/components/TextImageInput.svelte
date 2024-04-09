@@ -1,8 +1,8 @@
-<script>
+<script lang="ts">
   import { createEventDispatcher } from "svelte";
   let text = "";
   let imageFile = null;
-  let imagePreviewUrl = null;
+  let imagePreviewUrl: null | string = null;
   const dispatch = createEventDispatcher();
   let inputMode = "text"; // Possible values: 'text', 'image'
   let isDraggingOver = false; // Tracks drag state

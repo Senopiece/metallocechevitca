@@ -1,5 +1,5 @@
-<script>
-  export let options = [];
+<script lang="ts">
+  export let options: DropdownElem[] = [];
   let isDropdownOpen = false;
 
   function toggleSelectAll() {
