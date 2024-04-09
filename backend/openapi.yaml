@@ -1,0 +1,303 @@
+openapi: 3.1.0
+info:
+  title: FastAPI
+  version: 0.1.0
+paths:
+  /info/areas/:
+    get:
+      summary: Get Areas
+      operationId: get_areas_info_areas__get
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Area'
+                type: array
+                title: Response Get Areas Info Areas  Get
+  /search/text/:
+    get:
+      summary: Search By Text
+      operationId: search_by_text_search_text__get
+      parameters:
+        - name: places_limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            title: Places Limit
+        - name: areas_id
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              minimum: 0
+            title: Areas Id
+        - name: query
+          in: query
+          required: true
+          schema:
+            type: string
+            title: Query
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TextQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /search/image/:
+    put:
+      summary: Search By Image
+      operationId: search_by_image_search_image__put
+      parameters:
+        - name: places_limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 5
+            title: Places Limit
+        - name: areas_id
+          in: query
+          required: true
+          schema:
+            type: array
+            items:
+              type: integer
+              minimum: 0
+            title: Areas Id
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Body_search_by_image_search_image__put'
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageQueryResponse'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /image/{image_id}:
+    get:
+      summary: Get Image
+      operationId: get_image_image__image_id__get
+      parameters:
+        - name: image_id
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+            title: Image Id
+      responses:
+        '200':
+          description: Successful Response
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+  /place/{xid}:
+    get:
+      summary: Get Place Info
+      operationId: get_place_info_place__xid__get
+      parameters:
+        - name: xid
+          in: path
+          required: true
+          schema:
+            type: string
+            minLength: 1
+            maxLength: 255
+            title: Xid
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PlaceInfo'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+components:
+  schemas:
+    Area:
+      properties:
+        id:
+          type: integer
+          minimum: 0
+          title: Id
+        name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+      type: object
+      required:
+        - id
+        - name
+      title: Area
+    Body_search_by_image_search_image__put:
+      properties:
+        image_file:
+          type: string
+          format: binary
+          title: Image File
+      type: object
+      required:
+        - image_file
+      title: Body_search_by_image_search_image__put
+    CategoryPrediction:
+      properties:
+        category:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Category
+        probability:
+          type: number
+          maximum: 1
+          minimum: 0
+          title: Probability
+      type: object
+      required:
+        - category
+        - probability
+      title: CategoryPrediction
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+          title: Detail
+      type: object
+      title: HTTPValidationError
+    ImageQueryResponse:
+      properties:
+        places:
+          items:
+            $ref: '#/components/schemas/PlacePrediction'
+          type: array
+          title: Places
+        categories:
+          items:
+            $ref: '#/components/schemas/CategoryPrediction'
+          type: array
+          title: Categories
+      type: object
+      required:
+        - places
+        - categories
+      title: ImageQueryResponse
+    PlaceInfo:
+      properties:
+        category:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Category
+        city_id:
+          type: integer
+          minimum: 0
+          title: City Id
+        images:
+          items:
+            type: integer
+            minimum: 0
+          type: array
+          title: Images
+      type: object
+      required:
+        - category
+        - city_id
+        - images
+      title: PlaceInfo
+    PlacePrediction:
+      properties:
+        XID:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Xid
+        Name:
+          type: string
+          maxLength: 255
+          minLength: 1
+          title: Name
+        Lon:
+          type: number
+          title: Lon
+        Lat:
+          type: number
+          title: Lat
+        probability:
+          type: number
+          maximum: 1
+          minimum: 0
+          title: Probability
+      type: object
+      required:
+        - XID
+        - Name
+        - Lon
+        - Lat
+        - probability
+      title: PlacePrediction
+    TextQueryResponse:
+      properties:
+        places:
+          items:
+            $ref: '#/components/schemas/PlacePrediction'
+          type: array
+          title: Places
+      type: object
+      required:
+        - places
+      title: TextQueryResponse
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          type: array
+          title: Location
+        msg:
+          type: string
+          title: Message
+        type:
+          type: string
+          title: Error Type
+      type: object
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
