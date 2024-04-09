@@ -2,16 +2,21 @@ FROM python:3.11
 
 WORKDIR /code
 
-RUN pip install poetry
+ARG YOUR_ENV
 
-COPY ./poetry.lock /code/poetry.lock
-COPY ./pyproject.toml /code/pyproject.toml
+ENV YOUR_ENV=${YOUR_ENV:-dev} \
+  POETRY_NO_INTERACTION=1 \
+  POETRY_VIRTUALENVS_CREATE=false \
+  POETRY_CACHE_DIR='/var/cache/pypoetry' \
+  POETRY_HOME='/usr/local' \
+  POETRY_VERSION=1.6.1
 
-RUN poetry install
+RUN curl -sSL https://install.python-poetry.org | python3 -
+
+COPY poetry.lock pyproject.toml /code/
+
+RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-interaction --no-ansi
 
 COPY ./app /code/app
 
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]
-
-# If running behind a proxy like Nginx or Traefik add --proxy-headers
-# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--proxy-headers"]
