@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import info, search, image, place
+from app.routers import image, info, place, search
 
 app = FastAPI()
 

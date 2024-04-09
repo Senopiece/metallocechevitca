@@ -2,8 +2,8 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends
 
-from app.models.area import Area
 from app.dependencies import get_areas_repo
+from app.models.area import Area
 from app.repos.areas_repo import AreasRepo
 
 router = APIRouter(prefix="/info")

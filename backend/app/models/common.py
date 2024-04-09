@@ -1,5 +1,5 @@
 from fastapi import Query
-from pydantic import constr, confloat, BaseModel, PositiveInt, NonNegativeInt, Field
+from pydantic import BaseModel, Field, NonNegativeInt, PositiveInt, confloat, constr
 
 NonEmptyString = constr(min_length=1, max_length=255)
 Probability = confloat(ge=0, le=1)

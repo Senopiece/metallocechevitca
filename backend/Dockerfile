@@ -4,7 +4,7 @@ WORKDIR /code
 
 ARG YOUR_ENV
 
-ENV YOUR_ENV=${YOUR_ENV:-dev} \
+ENV YOUR_ENV=${YOUR_ENV:-production} \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_CREATE=false \
   POETRY_CACHE_DIR='/var/cache/pypoetry' \

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.models.common import NonEmptyString, AreaID
+from app.models.common import AreaID, NonEmptyString
 
 
 class Area(BaseModel):

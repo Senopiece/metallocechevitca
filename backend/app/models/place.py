@@ -1,5 +1,13 @@
-from pydantic import BaseModel, Field
-from app.models.common import NonEmptyString, Probability, XID, Category, ImageID, AreaID
+from pydantic import BaseModel, Field, ConfigDict
+
+from app.models.common import (
+    XID,
+    AreaID,
+    Category,
+    ImageID,
+    NonEmptyString,
+    Probability,
+)
 
 
 class PlacePrediction(BaseModel):
@@ -9,9 +17,10 @@ class PlacePrediction(BaseModel):
     latitude: float = Field(alias="Lat")
     probability: Probability
 
+    model_config = ConfigDict(populate_by_name=True)
+
 
 class PlaceInfo(BaseModel):
     category: Category
     city_id: AreaID
     images: list[ImageID]
-
