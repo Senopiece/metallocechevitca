@@ -4,6 +4,7 @@ from app.repos.mocks.areas_mock import AreasMock
 from app.repos.mocks.categories_mock import CategoriesMock
 from app.repos.mocks.places_mock import PlacesMock
 from app.repos.places_repo import PlacesRepo
+from app.repos.route_optimizer import RouteOptimizer
 
 
 def get_areas_repo() -> AreasRepo:
@@ -16,3 +17,7 @@ def get_places_repo() -> PlacesRepo:
 
 def get_categories_repo() -> CategoriesRepo:
     return CategoriesMock()
+
+
+def get_route_optimizer_repo() -> RouteOptimizer:
+    return NotImplemented
