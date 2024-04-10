@@ -1,4 +1,4 @@
-from app.models.common import XID, Embedding, ResponseLimit, AreaID
+from app.models.common import XID, AreaID, Embedding, ResponseLimit
 from app.models.place import PlaceInfo, PlacePrediction
 from app.repos.places_repo import PlacesRepo
 
