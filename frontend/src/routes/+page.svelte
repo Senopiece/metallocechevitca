@@ -5,29 +5,76 @@
 	import MultiChoiceDropdown from '$lib/components/MultiChoiceDropdown.svelte';
 	import { getPlacesImpl } from '$lib/services/Places';
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
-
-	function handleUpdate(event: any) {
-		console.log(event.detail);
-	}
-
-	let options: DropdownElem[] | undefined = undefined;
+	import type {
+		MultimodalSelectedFile,
+		MultimodalSelectedText
+	} from '$lib/structs/MultimodalSelect';
 
 	const placesapi = getPlacesImpl();
 
+	let initialOptions: DropdownElem[] | undefined;
+
+	let limit: number | undefined;
+	let selected: MultimodalSelectedText | MultimodalSelectedFile | undefined;
+	let selectedOptionsIds: number[] | undefined;
+
+	function handleSelect(event: CustomEvent<MultimodalSelectedText | MultimodalSelectedFile>) {
+		selected = event.detail;
+	}
+
+	function handleUpdate(event: CustomEvent<number>) {
+		limit = event.detail;
+	}
+
+	function handleSelectedOptions(event: CustomEvent<number[]>) {
+		selectedOptionsIds = event.detail;
+	}
+
+	async function handleSubmit() {
+		if (
+			limit === undefined ||
+			selected === undefined ||
+			initialOptions === undefined ||
+			selectedOptionsIds === undefined
+		) {
+			console.error('All fields are required.');
+			console.log(limit, selected, initialOptions, selectedOptionsIds);
+			return;
+		}
+
+		if (selectedOptionsIds.length === 0) {
+			console.error('No areas selected.');
+			return;
+		}
+
+		if (selected.type === 'text') {
+			const searchResult = await placesapi.searchText(selected.value, selectedOptionsIds, limit);
+			console.log(searchResult);
+		} else if (selected.type === 'image') {
+			const searchResult = await placesapi.searchImage(selectedOptionsIds, selected.file, limit);
+			console.log(searchResult);
+		}
+	}
+
 	onMount(async () => {
 		const rawoptions = await placesapi.getAreas();
-		options = rawoptions.map<DropdownElem>((e) => ({ id: e.id, name: e.name, selected: false }));
+		initialOptions = rawoptions.map<DropdownElem>((e) => ({
+			id: e.id,
+			name: e.name,
+			selected: false
+		}));
 	});
 </script>
 
 <main>
-	<TextImageInput />
-	{#if options === undefined}
+	<TextImageInput on:selected={handleSelect} />
+	{#if initialOptions === undefined}
 		<p>Loading...</p>
 	{:else}
-		<MultiChoiceDropdown {options} />
+		<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
 	{/if}
 	<LimitNumberInput on:update={handleUpdate} />
+	<button on:click={handleSubmit}>Submit</button>
 </main>
 
 <style>

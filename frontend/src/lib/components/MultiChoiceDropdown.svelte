@@ -1,8 +1,13 @@
 <script lang="ts">
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
+	import { createEventDispatcher } from 'svelte';
 
 	export let options: DropdownElem[] = [];
 	let isDropdownOpen = false;
+
+	const dispatch = createEventDispatcher<{
+		selected: number[];
+	}>();
 
 	function toggleSelectAll() {
 		const newSelectionValue = !allSelected;
@@ -10,9 +15,18 @@
 			...option,
 			selected: newSelectionValue
 		}));
+		dispatchSelectedOptions();
 	}
 
-	$: allSelected = options.every((option) => option.selected);
+	// Dispatch the IDs of the selected options
+	function dispatchSelectedOptions() {
+		const selectedIds = options.filter((option) => option.selected).map((option) => option.id);
+		dispatch('selected', selectedIds);
+	}
+
+	// Reactively watch for changes in the options array to dispatch the selected IDs
+	$: options, dispatchSelectedOptions();
+	$: allSelected = options.every((option) => option.selected && options.length > 0);
 </script>
 
 <div class="dropdown">
@@ -25,7 +39,11 @@
 			</label>
 			{#each options as option}
 				<label>
-					<input type="checkbox" bind:checked={option.selected} />
+					<input
+						type="checkbox"
+						bind:checked={option.selected}
+						on:change={dispatchSelectedOptions}
+					/>
 					{option.name}
 				</label>
 			{/each}

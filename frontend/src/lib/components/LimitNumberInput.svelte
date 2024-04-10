@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
+	import { createEventDispatcher } from 'svelte';
 
-  const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher<{ update: number }>();
 
-  export let maxLimit = 10;
-  let value = maxLimit;
+	export let maxLimit = 10;
+	let value = maxLimit;
 
-  function updateValue(event: any) {
-    // Use a type assertion to tell TypeScript the target is an input element
-    let inputElement = event.target as HTMLInputElement;
-    let inputValue = +inputElement.value;
+	function updateValue(event: any) {
+		// Use a type assertion to tell TypeScript the target is an input element
+		let inputElement = event.target as HTMLInputElement;
+		let inputValue = +inputElement.value;
 
-    if (inputValue > maxLimit) {
-      value = maxLimit;
-    } else if (inputValue < 0) {
-      value = 0;
-    } else {
-      value = inputValue;
-    }
+		if (inputValue > maxLimit) {
+			value = maxLimit;
+		} else if (inputValue < 0) {
+			value = 0;
+		} else {
+			value = inputValue;
+		}
 
-    // Dispatch the update event with the new value
-    dispatch("update", value);
-  }
+		// Dispatch the update event with the new value
+		dispatch('update', value);
+	}
 </script>
 
 <div>
-  <span>Limit: </span>
-  <input type="number" bind:value on:input={updateValue} />
+	<span>Limit: </span>
+	<input type="number" bind:value on:input={updateValue} />
 </div>
