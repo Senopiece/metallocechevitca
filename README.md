@@ -12,7 +12,7 @@ docker compose up --build
 
 Tweak port mapping and environment variables if necessary
 
-### Диограмма Гранта
+### Диaграмма Гантта
 
 ```mermaid
 gantt
