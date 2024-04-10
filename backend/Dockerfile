@@ -19,4 +19,6 @@ RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-
 
 COPY ./app /code/app
 
+EXPOSE 80
+
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80"]

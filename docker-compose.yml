@@ -1,7 +1,0 @@
-services:
-  backend:
-    build:
-      context: ./backend
-    ports:
-      - "80:80"
-
