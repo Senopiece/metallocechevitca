@@ -6,9 +6,9 @@ from app.repos.route_optimizer import RouteOptimizer
 
 class ManhettanRouteOptimizer(RouteOptimizer):
     # Manhettan router with some heuristics
-    async def get_route(self, points: List[LatLon]) -> List[LatLon]:
+    async def get_route(self, points: List[LatLon]) -> List[LatLon] | None:
         if not points:
-            return []
+            return None
 
         # Convert latitude and longitude to approximate kilometers to use for distance calculations
         points_in_km = [
@@ -43,4 +43,7 @@ class ManhettanRouteOptimizer(RouteOptimizer):
             else:
                 break  # No further points can be added without exceeding the distance limit
 
+        if len(route) <= 1:
+            return None
+        
         return route
