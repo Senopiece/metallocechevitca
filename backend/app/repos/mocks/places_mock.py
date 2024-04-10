@@ -1,5 +1,3 @@
-from fastapi import UploadFile
-
 from app.models.common import XID, AreaID, Embedding, ImageID, ResponseLimit
 from app.models.place import PlaceInfo, PlaceInput, PlacePrediction
 from app.repos.places_repo import PlacesRepo
@@ -9,9 +7,9 @@ class PlacesMock(PlacesRepo):
 
     def __init__(self):
         self.XID_TO_INFO: dict[XID, PlaceInfo] = {
-            "N555": PlaceInfo(category="памятник", images=[0, 1]),
-            "W123": PlaceInfo(category="музей", images=[2, 3]),
-            "W321": PlaceInfo(category="театр", images=[4, 5]),
+            "N555": PlaceInfo(category="памятник", images=["0", "1"]),
+            "W123": PlaceInfo(category="музей", images=["2", "3"]),
+            "W321": PlaceInfo(category="театр", images=["4", "5"]),
         }
 
     def add_place_image(self, xid: XID, image_id: ImageID) -> None: ...

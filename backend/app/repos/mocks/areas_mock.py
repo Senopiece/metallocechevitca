@@ -1,4 +1,4 @@
-from app.models.area import Area, KNOWN_AREAS
+from app.models.area import KNOWN_AREAS, Area
 from app.repos.areas_repo import AreasRepo
 
 

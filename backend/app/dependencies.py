@@ -1,3 +1,4 @@
+from app.main import app
 from app.repos.areas_repo import AreasRepo
 from app.repos.categories_repo import CategoriesRepo
 from app.repos.db.places import PlacesDB
@@ -15,7 +16,7 @@ def get_areas_repo() -> AreasRepo:
 
 
 def get_places_repo() -> PlacesRepo:
-    return PlacesDB.from_env()
+    return app.places_repo
 
 
 def get_categories_repo() -> CategoriesRepo:
