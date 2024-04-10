@@ -1,9 +1,11 @@
 <script lang="ts">
-	import { createEventDispatcher, onMount, onDestroy } from 'svelte';
+	import type { DropdownElem } from '$lib/structs/DropdownElem';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+
+	let dropdownElement;
 
 	export let options: DropdownElem[] = [];
 	let isDropdownOpen = false;
-	let dropdownElement;
 
 	const dispatch = createEventDispatcher<{
 		selected: number[];
@@ -18,25 +20,24 @@
 		dispatchSelectedOptions();
 	}
 
+	// Dispatch the IDs of the selected options
 	function dispatchSelectedOptions() {
 		dispatch('selected', selectedIds);
 	}
 
+	const handleClickOutside = (event) => {
+		if (!dropdownElement.contains(event.target)) {
+			isDropdownOpen = false;
+		}
+	};
+
 	onMount(() => {
 		dispatch('selected', selectedIds);
-
-		const handleClickOutside = (event) => {
-			if (!dropdownElement.contains(event.target)) {
-				isDropdownOpen = false;
-			}
-		};
-
 		window.addEventListener('click', handleClickOutside);
+	});
 
-		// Cleanup event listener on component destruction
-		onDestroy(() => {
-			window.removeEventListener('click', handleClickOutside);
-		});
+	onDestroy(() => {
+		window.removeEventListener('click', handleClickOutside);
 	});
 
 	function handleDropdownClick(event) {
