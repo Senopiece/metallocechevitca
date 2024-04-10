@@ -1,5 +1,6 @@
 import axios, { type AxiosInstance } from 'axios';
 import type { Places } from './Places';
+import type { Area, ImageQueryResponse, PlaceInfo, TextQueryResponse } from '$lib/structs/Places';
 
 export class PlacesRestApi implements Places {
 	private axiosInstance: AxiosInstance;
