@@ -5,8 +5,13 @@ services:
     ports:
       - "9090:80"
     environment:
-      - MILVUS_URI=http://standalone:19530
-      - FLUSH_EVERY_TIME=True # FIXME: Set it to False in production
+      MILVUS_URI: http://standalone:19530
+      FLUSH_EVERY_TIME: True # FIXME: Set it to False in production
+      MINIO_ACCESS_KEY: minioadmin
+      MINIO_SECRET_KEY: minioadmin
+      MINIO_ENDPOINT: minio:9000
+      MINIO_BUCKET_NAME: images_bucket
+
     volumes:
       - ./examples:/code/examples
 

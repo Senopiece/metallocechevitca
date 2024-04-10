@@ -29,7 +29,7 @@ class PlacesDB(PlacesRepo):
         assert self.flush_every_time
 
     def exists_place(self, xid: XID) -> bool:
-        return self._get_by_xid(xid) is not None
+        return self._get_by_xid(xid, ["XID"]) is not None
 
     def _create_emb_collection(self) -> Collection:
         primary_key = FieldSchema(
@@ -46,9 +46,10 @@ class PlacesDB(PlacesRepo):
         images = FieldSchema(
             "images",
             dtype=DataType.ARRAY,
-            element_type=DataType.INT64,
+            element_type=DataType.VARCHAR,
+            # the maximum number of images per place in dataset is around 130, so 256 seems like sensible upper limit
             max_capacity=256,
-            # maximum in dataset is around 130, so 256 seems like sensible upper limit
+            max_length=36,  # length of UUID4
         )
 
         schema = CollectionSchema(
@@ -118,7 +119,19 @@ class PlacesDB(PlacesRepo):
         return result.insert_count > 0
 
     def add_place_image(self, xid: XID, image_id: ImageID) -> None:
-        existing_hit = self._get_by_xid(xid, ["XID", "images"])
+        existing_hit = self._get_by_xid(
+            xid,
+            [
+                "XID",
+                "Name",
+                self.EMBEDDING_FIELD,
+                "city_id",
+                "Lat",
+                "Lon",
+                "category",
+                "images",
+            ],
+        )
         if existing_hit is not None:
-            existing_hit["images"] = existing_hit.get("images", []) + [image_id]
+            existing_hit["images"] = existing_hit.get("images", []) + [str(image_id)]
             self.collection.upsert(existing_hit)

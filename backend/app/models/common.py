@@ -1,5 +1,6 @@
 from fastapi import Query
 from pydantic import (
+    UUID4,
     BaseModel,
     Field,
     NonNegativeInt,
@@ -17,7 +18,7 @@ Probability = confloat(ge=0, le=1)
 XID = NonEmptyString
 AreaID = NonNegativeInt
 Category = NonEmptyString
-ImageID = NonNegativeInt
+ImageID = UUID4
 ResponseLimit = PositiveInt
 Embedding = conlist(float, min_length=EMB_VECTOR_DIM, max_length=EMB_VECTOR_DIM)
 
