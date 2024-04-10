@@ -8,14 +8,20 @@ export interface CategoryPrediction {
 	probability: number;
 }
 
+export interface LatLon {
+	Lat: number;
+	Lon: number;
+}
+
 export interface ImageQueryResponse {
+	optimal_route: LatLon[] | null;
 	places: PlacePrediction[];
 	categories: CategoryPrediction[];
 }
 
 export interface PlaceInfo {
 	category: string;
-	images: number[];
+	images: string[];
 }
 
 export interface PlacePrediction {
@@ -28,5 +34,6 @@ export interface PlacePrediction {
 }
 
 export interface TextQueryResponse {
+	optimal_route: LatLon[] | null;
 	places: PlacePrediction[];
 }

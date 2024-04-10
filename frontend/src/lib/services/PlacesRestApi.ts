@@ -24,18 +24,7 @@ export class PlacesRestApi implements Places {
 				places_limit: placesLimit
 			}
 		});
-
-		const data = response.data;
-
-		// augment
-		console.log(data.places);
-		data.places = data.places.map((p) => {
-			p.Lat += 56.3327 + Math.random() * 0.02 - 0.01;
-			p.Lon += 44.0012 + Math.random() * 0.02 - 0.01;
-			return p;
-		});
-
-		return data;
+		return response.data;
 	}
 
 	async searchImage(areasId: number[], imageFile: File, placesLimit: number = 5) {
@@ -49,18 +38,7 @@ export class PlacesRestApi implements Places {
 				areas_id: areasId
 			}
 		});
-
-		const data = response.data;
-
-		// augment
-		console.log(data.places);
-		data.places = data.places.map((p) => {
-			p.Lat += 56.3327 + Math.random() * 0.02 - 0.01;
-			p.Lon += 44.0012 + Math.random() * 0.02 - 0.01;
-			return p;
-		});
-
-		return data;
+		return response.data;
 	}
 
 	async getPlaceInfo(xid: string) {

@@ -25,15 +25,18 @@
 					'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
 
-			const waypoints = searchResults.res.places.map((place) => L.latLng(place.Lat, place.Lon));
-			L.Routing.control({
-				waypoints: waypoints,
-				routeWhileDragging: true,
-				addWaypoints: false,
-				createMarker: function () {
-					return null;
-				} // Prevent automatic marker creation
-			}).addTo(map);
+			let optimal_route = searchResults.res.optimal_route;
+			if (optimal_route !== null) {
+				const waypoints = optimal_route.map((ll) => L.latLng(ll.Lat, ll.Lon));
+				L.Routing.control({
+					waypoints: waypoints,
+					routeWhileDragging: true,
+					addWaypoints: false,
+					createMarker: function () {
+						return null;
+					} // Prevent automatic marker creation
+				}).addTo(map);
+			}
 
 			// Add markers and tooltips for each place
 			searchResults.res.places.forEach((place) => {
