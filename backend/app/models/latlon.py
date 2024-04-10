@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field
 
+
 class LatLon(BaseModel):
-    longitude: float = Field(alias="Lon")
-    latitude: float = Field(alias="Lat")
+    lon: float = Field(alias="Lon")
+    lat: float = Field(alias="Lat")
