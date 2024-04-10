@@ -1,5 +1,6 @@
 import { PlacesRestApi } from './PlacesRestApi';
 import { env } from '$env/dynamic/public';
+import type { Area, ImageQueryResponse, PlaceInfo, TextQueryResponse } from '$lib/structs/Places';
 
 export interface Places {
 	getAreas(): Promise<Area[]>;

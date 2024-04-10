@@ -1,32 +1,32 @@
-interface Area {
-  id: number;
-  name: string;
+export interface Area {
+	id: number;
+	name: string;
 }
 
-interface CategoryPrediction {
-  category: string;
-  probability: number;
+export interface CategoryPrediction {
+	category: string;
+	probability: number;
 }
 
-interface ImageQueryResponse {
-  places: PlacePrediction[];
-  categories: CategoryPrediction[];
+export interface ImageQueryResponse {
+	places: PlacePrediction[];
+	categories: CategoryPrediction[];
 }
 
-interface PlaceInfo {
-  category: string;
-  city_id: number;
-  images: number[];
+export interface PlaceInfo {
+	category: string;
+	city_id: number;
+	images: number[];
 }
 
-interface PlacePrediction {
-  XID: string;
-  Name: string;
-  Lon: number;
-  Lat: number;
-  probability: number;
+export interface PlacePrediction {
+	XID: string;
+	Name: string;
+	Lon: number;
+	Lat: number;
+	probability: number;
 }
 
-interface TextQueryResponse {
-  places: PlacePrediction[];
+export interface TextQueryResponse {
+	places: PlacePrediction[];
 }
