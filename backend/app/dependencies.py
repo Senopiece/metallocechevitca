@@ -7,6 +7,7 @@ from app.repos.mocks.areas_mock import AreasMock
 from app.repos.mocks.categories_mock import CategoriesMock
 from app.repos.mocks.embedding_mock import EmbeddingMock
 from app.repos.mocks.images_mock import ImagesMock
+from app.repos.mocks.places_mock import PlacesMock
 from app.repos.places_repo import PlacesRepo
 
 
@@ -15,7 +16,8 @@ def get_areas_repo() -> AreasRepo:
 
 
 def get_places_repo() -> PlacesRepo:
-    return PlacesDB.from_env()
+    # return PlacesDB.from_env()
+    return PlacesMock()
 
 
 def get_categories_repo() -> CategoriesRepo:

@@ -1,6 +1,4 @@
-from typing import Annotated, Self
-
-from fastapi import Depends
+from typing import Self
 from pymilvus import MilvusClient
 
 from app.models.common import XID, AreaID, Embedding, ResponseLimit
@@ -11,7 +9,8 @@ from app.repos.places_repo import PlacesRepo
 
 class PlacesDB(PlacesRepo):
     def __init__(self, milvus_uri: str) -> None:
-        self.client = MilvusClient(milvus_uri)
+        # self.client = MilvusClient(milvus_uri)
+        ...
 
     @classmethod
     def from_env(cls) -> Self:

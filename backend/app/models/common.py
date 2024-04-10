@@ -15,4 +15,4 @@ Embedding = ...
 
 class QueryRequest(BaseModel):
     places_limit: ResponseLimit = Field(Query(5))
-    areas_id: list[AreaID] = Field(Query(...))
+    areas_id: list[AreaID] = Field(Query(..., alias="areas_id[]"))
