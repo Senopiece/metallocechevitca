@@ -16,11 +16,11 @@ class PlacePrediction(BaseModel):
     longitude: float = Field(alias="Lon")
     latitude: float = Field(alias="Lat")
     probability: Probability
+    city_id: AreaID
 
     model_config = ConfigDict(populate_by_name=True)
 
 
 class PlaceInfo(BaseModel):
     category: Category
-    city_id: AreaID
     images: list[ImageID]
