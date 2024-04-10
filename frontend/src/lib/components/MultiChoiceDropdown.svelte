@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { DropdownElem } from '$lib/structs/DropdownElem';
-	import { createEventDispatcher, onMount } from 'svelte';
+	import { createEventDispatcher, onMount, onDestroy } from 'svelte';
 
 	export let options: DropdownElem[] = [];
 	let isDropdownOpen = false;
+	let dropdownElement;
 
 	const dispatch = createEventDispatcher<{
 		selected: number[];
@@ -18,21 +18,38 @@
 		dispatchSelectedOptions();
 	}
 
-	// Dispatch the IDs of the selected options
 	function dispatchSelectedOptions() {
 		dispatch('selected', selectedIds);
 	}
 
 	onMount(() => {
 		dispatch('selected', selectedIds);
+
+		const handleClickOutside = (event) => {
+			if (!dropdownElement.contains(event.target)) {
+				isDropdownOpen = false;
+			}
+		};
+
+		window.addEventListener('click', handleClickOutside);
+
+		// Cleanup event listener on component destruction
+		onDestroy(() => {
+			window.removeEventListener('click', handleClickOutside);
+		});
 	});
+
+	function handleDropdownClick(event) {
+		// Prevent click inside dropdown from reaching window
+		event.stopPropagation();
+	}
 
 	$: selectedIds = options.filter((option) => option.selected).map((option) => option.id);
 	$: options, dispatchSelectedOptions();
 	$: allSelected = options.every((option) => option.selected && options.length > 0);
 </script>
 
-<div class="dropdown">
+<div class="dropdown" bind:this={dropdownElement} on:click={handleDropdownClick}>
 	<button on:click={() => (isDropdownOpen = !isDropdownOpen)}> Выбрать города </button>
 	{#if isDropdownOpen}
 		<div class="dropdown-menu">
