@@ -24,15 +24,14 @@
 		{#if searchResults.type === 'text'}
 			{#each searchResults.res.places as place}
 				<div>
-					<h2>{place.Name} : {place.probability}</h2>
+					<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
 				</div>
 			{/each}
 		{:else}
 			<!-- Assuming it's an image search result -->
 			{#each searchResults.res.places as place}
 				<div>
-					<h2>{place.Name}</h2>
-					<!-- Display other place details -->
+					<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
 				</div>
 			{/each}
 			<!-- Optionally display the image or categories -->
