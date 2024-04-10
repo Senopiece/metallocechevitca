@@ -30,8 +30,8 @@ export class PlacesRestApi implements Places {
 		// augment
 		console.log(data.places);
 		data.places = data.places.map((p) => {
-			p.Lat += 8 + Math.random() * 0.02 - 0.01;
-			p.Lon += Math.random() * 0.02 - 0.01;
+			p.Lat += 56.3327 + Math.random() * 0.02 - 0.01;
+			p.Lon += 44.0012 + Math.random() * 0.02 - 0.01;
 			return p;
 		});
 
@@ -55,8 +55,8 @@ export class PlacesRestApi implements Places {
 		// augment
 		console.log(data.places);
 		data.places = data.places.map((p) => {
-			p.Lat += 8 + Math.random() * 0.02 - 0.01;
-			p.Lon += Math.random() * 0.02 - 0.01;
+			p.Lat += 56.3327 + Math.random() * 0.02 - 0.01;
+			p.Lon += 44.0012 + Math.random() * 0.02 - 0.01;
 			return p;
 		});
 
