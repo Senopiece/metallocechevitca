@@ -20,7 +20,7 @@
 
 {#if placeInfo}
 	<div>
-		<h2>Category: {placeInfo.category}</h2>
+		<h2>Категория: {placeInfo.category}</h2>
 		{#if placeInfo.images.length > 0}
 			<div class="images">
 				{#each placeInfo.images as imageId}
