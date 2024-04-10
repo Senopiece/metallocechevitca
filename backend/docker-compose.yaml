@@ -6,6 +6,8 @@ services:
       - "9090:80"
     environment:
       - MILVUS_URI=http://standalone:19530
+    volumes:
+      - ./examples:/code/examples
 
   etcd:
     container_name: milvus-etcd
