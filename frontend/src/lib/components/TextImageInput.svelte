@@ -10,7 +10,7 @@
 	const dispatch = createEventDispatcher<{
 		selected: MultimodalSelectedText | MultimodalSelectedFile;
 	}>();
-	let inputMode = 'text'; // Possible values: 'text', 'image'
+	let inputMode = 'image'; // Possible values: 'text', 'image'
 	let isDraggingOver = false; // Tracks drag state
 
 	function switchInputMode() {
@@ -66,10 +66,6 @@
 		event.preventDefault();
 		isDraggingOver = false;
 	}
-
-	onMount(() => {
-		dispatch('selected', { type: 'text', value: '' });
-	});
 
 	$: if (text && inputMode === 'text') {
 		dispatch('selected', { type: 'text', value: text });
