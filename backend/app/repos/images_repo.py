@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import NamedTuple
 
+from fastapi import UploadFile
+
 from app.models.common import ImageID
 
 
@@ -13,4 +15,8 @@ class ImageToServe(NamedTuple):
 class ImagesRepo(ABC):
     @abstractmethod
     def get_image_path_by_id(self, image_id: ImageID) -> ImageToServe:
+        return NotImplemented
+
+    @abstractmethod
+    def save_image(self, image: UploadFile) -> ImageID:
         return NotImplemented

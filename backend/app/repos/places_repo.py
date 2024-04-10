@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 
-from app.models.common import XID, AreaID, Embedding, ResponseLimit
-from app.models.place import PlaceInfo, PlacePrediction
+from app.models.common import XID, AreaID, Embedding, ImageID, ResponseLimit
+from app.models.place import PlaceInfo, PlaceInput, PlacePrediction
 
 
 class PlacesRepo(ABC):
@@ -15,5 +15,15 @@ class PlacesRepo(ABC):
         return NotImplemented
 
     @abstractmethod
+    def exists_place(self, xid: XID) -> bool:
+        return NotImplemented
+
+    @abstractmethod
     def get_place_info(self, xid: XID) -> PlaceInfo:
         return NotImplemented
+
+    @abstractmethod
+    def upload_place(self, place_data: PlaceInput) -> bool: ...
+
+    @abstractmethod
+    def add_place_image(self, xid: XID, image_id: ImageID) -> None: ...

@@ -1,14 +1,26 @@
-from app.models.common import XID, AreaID, Embedding, ResponseLimit
-from app.models.place import PlaceInfo, PlacePrediction
+from fastapi import UploadFile
+
+from app.models.common import XID, AreaID, Embedding, ImageID, ResponseLimit
+from app.models.place import PlaceInfo, PlaceInput, PlacePrediction
 from app.repos.places_repo import PlacesRepo
 
 
 class PlacesMock(PlacesRepo):
-    XID_TO_INFO: dict[XID, PlaceInfo] = {
-        "N555": PlaceInfo(category="памятник", images=[0, 1]),
-        "W123": PlaceInfo(category="музей", images=[2, 3]),
-        "W321": PlaceInfo(category="театр", images=[4, 5]),
-    }
+
+    def __init__(self):
+        self.XID_TO_INFO: dict[XID, PlaceInfo] = {
+            "N555": PlaceInfo(category="памятник", images=[0, 1]),
+            "W123": PlaceInfo(category="музей", images=[2, 3]),
+            "W321": PlaceInfo(category="театр", images=[4, 5]),
+        }
+
+    def add_place_image(self, xid: XID, image_id: ImageID) -> None: ...
+
+    def exists_place(self, xid: XID) -> bool:
+        return True
+
+    def upload_place(self, place_data: PlaceInput) -> bool:
+        return True
 
     def get_place_info(self, xid: XID) -> PlaceInfo:
         return self.XID_TO_INFO.get(XID, PlaceInfo(category="mock", images=[0, 1]))
