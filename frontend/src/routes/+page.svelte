@@ -74,7 +74,7 @@
 		<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
 	{/if}
 	<LimitNumberInput on:update={handleUpdate} />
-	<button on:click={handleSubmit}>Поиск</button>
+	<button on:click={handleSubmit}>Искать</button>
 </main>
 
 <style>
