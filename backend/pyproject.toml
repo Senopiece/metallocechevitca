@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "metallocechevitca-back"
+version = "0.1.0"
+description = "металлочебупицца"
+authors = ["Your Name <you@example.com>"]
+license = "WTFPL"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.110.1"
+uvicorn = "^0.29.0"
+python-multipart = "^0.0.9"
+
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.13.2"
+black = "^24.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
