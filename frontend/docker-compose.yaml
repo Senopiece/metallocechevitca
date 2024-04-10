@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  metallochechevitca-front:
+    build: .
+    container_name: metallochechevitca-front
+    ports:
+      - 8080:3000
+    environment:
+      PUBLIC_PLACES_REST_API_URL: http://localhost:9090 # requires api at this address
