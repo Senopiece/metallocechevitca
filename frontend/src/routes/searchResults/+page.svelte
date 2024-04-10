@@ -1,6 +1,9 @@
 <script lang="ts">
+	import 'leaflet/dist/leaflet.css';
+	import { Map, TileLayer, Marker, ToolTip } from 'svelte-map-leaflet';
 	import { searchResultsStore } from '$lib/services/SearchResultStore';
 	import type { SearchResultsStore } from '$lib/structs/SerachResult';
+	import { goto } from '$app/navigation';
 
 	let imageUrl: string;
 
@@ -17,8 +20,8 @@
 
 <main>
 	{#if searchResults}
-		<h1>Загруженное изображение</h1>
 		{#if searchResults?.type === 'image'}
+			<h1>Загруженное изображение</h1>
 			<img src={imageUrl} alt="Search image" />
 			{#each searchResults.res.categories as category}
 				<div>
@@ -27,12 +30,36 @@
 			{/each}
 		{/if}
 		<h1>Результаты поиска</h1>
-		{#each searchResults.res.places as place}
-			<div>
-				<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
-			</div>
-		{/each}
+		<div class="map">
+			<Map
+				options={{
+					center: [searchResults.res.places[0].Lat, searchResults.res.places[0].Lon],
+					zoom: 10
+				}}
+			>
+				<TileLayer name="BasicMap" url={'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'} />
+				{#each searchResults.res.places as place}
+					<Marker
+						name={place.XID}
+						latLng={[place.Lat, place.Lon]}
+						events={['click']}
+						on:click={() => goto(`/place/${place.XID}`)}
+					>
+						<ToolTip name={'tooltip' + place.XID}>
+							<p>{place.Name} : {place.probability}</p>
+						</ToolTip>
+					</Marker>
+				{/each}
+			</Map>
+		</div>
 	{:else}
 		<p>No search results to display.</p>
 	{/if}
 </main>
+
+<style>
+	.map {
+		height: 400px;
+		width: 100%; /* Adjusted for full width */
+	}
+</style>
