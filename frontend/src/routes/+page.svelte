@@ -5,29 +5,79 @@
 	import MultiChoiceDropdown from '$lib/components/MultiChoiceDropdown.svelte';
 	import { getPlacesImpl } from '$lib/services/Places';
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
-
-	function handleUpdate(event: any) {
-		console.log(event.detail);
-	}
-
-	let options: DropdownElem[] | undefined = undefined;
+	import type { MultimodalSelected } from '$lib/structs/MultimodalSelect';
+	import { goto } from '$app/navigation';
+	import { searchResultsStore } from '$lib/services/SearchResultStore';
 
 	const placesapi = getPlacesImpl();
 
+	let initialOptions: DropdownElem[] | undefined;
+
+	let limit: number | undefined;
+	let selected: MultimodalSelected | undefined;
+	let selectedOptionsIds: number[] | undefined;
+
+	function handleSelect(event: CustomEvent<MultimodalSelected>) {
+		selected = event.detail;
+	}
+
+	function handleUpdate(event: CustomEvent<number>) {
+		limit = event.detail;
+	}
+
+	function handleSelectedOptions(event: CustomEvent<number[]>) {
+		selectedOptionsIds = event.detail;
+	}
+
+	async function handleSubmit() {
+		if (
+			limit === undefined ||
+			selected === undefined ||
+			initialOptions === undefined ||
+			selectedOptionsIds === undefined
+		) {
+			console.error('All fields are required.');
+			console.log(limit, selected, initialOptions, selectedOptionsIds);
+			return;
+		}
+
+		if (selectedOptionsIds.length === 0) {
+			console.error('No areas selected.');
+			return;
+		}
+
+		let searchResult; // This should be either SearchResultsStoreImage or SearchResultsStoreText based on API call
+
+		if (selected.type === 'text') {
+			searchResult = await placesapi.searchText(selected.value, selectedOptionsIds, limit);
+			searchResultsStore.set({ type: 'text', res: searchResult });
+		} else if (selected.type === 'image') {
+			searchResult = await placesapi.searchImage(selectedOptionsIds, selected.file, limit);
+			searchResultsStore.set({ type: 'image', image: selected.file, res: searchResult });
+		}
+
+		goto('/searchResults');
+	}
+
 	onMount(async () => {
 		const rawoptions = await placesapi.getAreas();
-		options = rawoptions.map<DropdownElem>((e) => ({ id: e.id, name: e.name, selected: false }));
+		initialOptions = rawoptions.map<DropdownElem>((e) => ({
+			id: e.id,
+			name: e.name,
+			selected: false
+		}));
 	});
 </script>
 
 <main>
-	<TextImageInput />
-	{#if options === undefined}
-		<p>Loading...</p>
+	<TextImageInput on:selected={handleSelect} />
+	{#if initialOptions === undefined}
+		<p>Загрузка...</p>
 	{:else}
-		<MultiChoiceDropdown {options} />
+		<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
 	{/if}
 	<LimitNumberInput on:update={handleUpdate} />
+	<button on:click={handleSubmit}>Искать</button>
 </main>
 
 <style>

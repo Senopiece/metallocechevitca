@@ -1,8 +1,13 @@
 <script lang="ts">
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	export let options: DropdownElem[] = [];
 	let isDropdownOpen = false;
+
+	const dispatch = createEventDispatcher<{
+		selected: number[];
+	}>();
 
 	function toggleSelectAll() {
 		const newSelectionValue = !allSelected;
@@ -10,22 +15,38 @@
 			...option,
 			selected: newSelectionValue
 		}));
+		dispatchSelectedOptions();
 	}
 
-	$: allSelected = options.every((option) => option.selected);
+	// Dispatch the IDs of the selected options
+	function dispatchSelectedOptions() {
+		dispatch('selected', selectedIds);
+	}
+
+	onMount(() => {
+		dispatch('selected', selectedIds);
+	});
+
+	$: selectedIds = options.filter((option) => option.selected).map((option) => option.id);
+	$: options, dispatchSelectedOptions();
+	$: allSelected = options.every((option) => option.selected && options.length > 0);
 </script>
 
 <div class="dropdown">
-	<button on:click={() => (isDropdownOpen = !isDropdownOpen)}> Select Options </button>
+	<button on:click={() => (isDropdownOpen = !isDropdownOpen)}> Выбрать города </button>
 	{#if isDropdownOpen}
 		<div class="dropdown-menu">
 			<label>
 				<input type="checkbox" checked={allSelected} on:change={toggleSelectAll} />
-				Select All
+				Выбрать все
 			</label>
 			{#each options as option}
 				<label>
-					<input type="checkbox" bind:checked={option.selected} />
+					<input
+						type="checkbox"
+						bind:checked={option.selected}
+						on:change={dispatchSelectedOptions}
+					/>
 					{option.name}
 				</label>
 			{/each}
