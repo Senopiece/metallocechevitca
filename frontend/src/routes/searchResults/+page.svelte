@@ -29,7 +29,6 @@
 			L.Routing.control({
 				waypoints: waypoints,
 				routeWhileDragging: true,
-				show: false,
 				addWaypoints: false,
 				createMarker: function () {
 					return null;
