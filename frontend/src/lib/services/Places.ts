@@ -13,6 +13,10 @@ export interface Places {
 	getPlaceInfo(xid: string): Promise<PlaceInfo>;
 }
 
+export function getPlacesApiPath(): string {
+	return env.PUBLIC_PLACES_REST_API_URL || 'http://localhost';
+}
+
 export function getPlacesImpl(): Places {
-	return new PlacesRestApi(env.PUBLIC_PLACES_REST_API_URL || 'http://localhost');
+	return new PlacesRestApi(getPlacesApiPath());
 }
