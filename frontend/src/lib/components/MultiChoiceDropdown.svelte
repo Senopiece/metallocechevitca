@@ -33,12 +33,12 @@
 </script>
 
 <div class="dropdown">
-	<button on:click={() => (isDropdownOpen = !isDropdownOpen)}> Select Options </button>
+	<button on:click={() => (isDropdownOpen = !isDropdownOpen)}> Выбрать города </button>
 	{#if isDropdownOpen}
 		<div class="dropdown-menu">
 			<label>
 				<input type="checkbox" checked={allSelected} on:change={toggleSelectAll} />
-				Select All
+				Выбрать все
 			</label>
 			{#each options as option}
 				<label>

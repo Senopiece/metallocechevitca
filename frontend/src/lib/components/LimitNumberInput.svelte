@@ -29,6 +29,6 @@
 </script>
 
 <div>
-	<span>Limit: </span>
+	<span>Лимит: </span>
 	<input type="number" bind:value on:input={updateValue} />
 </div>

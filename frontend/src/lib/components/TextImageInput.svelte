@@ -78,7 +78,7 @@
 
 <div>
 	{#if inputMode === 'text'}
-		<input type="text" placeholder="Enter some text" bind:value={text} />
+		<input type="text" placeholder="Введите описание места" bind:value={text} />
 	{:else}
 		<input
 			type="file"
@@ -97,14 +97,14 @@
 			on:dragleave={handleDragLeave}
 			class:drag-over={isDraggingOver}
 		>
-			Drag and drop an image here, or click to select
+			Перетащите изображение сюда или нажмите чтобы загрузить из проводника
 		</label>
 		{#if imagePreviewUrl}
 			<img class="preview-img" src={imagePreviewUrl} alt="Image preview" />
 		{/if}
 	{/if}
 	<button class="switch-button" on:click={switchInputMode}>
-		Switch to {inputMode === 'text' ? 'Image' : 'Text'} Input
+		Переключиться на ввод {inputMode === 'text' ? 'картинки' : 'текста'}
 	</button>
 </div>
 

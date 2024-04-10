@@ -69,12 +69,12 @@
 <main>
 	<TextImageInput on:selected={handleSelect} />
 	{#if initialOptions === undefined}
-		<p>Loading...</p>
+		<p>Загрузка...</p>
 	{:else}
 		<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
 	{/if}
 	<LimitNumberInput on:update={handleUpdate} />
-	<button on:click={handleSubmit}>Submit</button>
+	<button on:click={handleSubmit}>Поиск</button>
 </main>
 
 <style>
