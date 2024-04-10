@@ -1,8 +1,13 @@
+from typing import Annotated
+
+from fastapi import Depends
+
 from app.main import app
 from app.repos.areas_repo import AreasRepo
 from app.repos.categories_repo import CategoriesRepo
 from app.repos.embedding_repo import EmbeddingRepo
 from app.repos.embeddings.client import EmbeddingClient
+from app.repos.embeddings.settings import ClientSettings
 from app.repos.images_repo import ImagesRepo
 from app.repos.mocks.areas_mock import AreasMock
 from app.repos.mocks.categories_mock import CategoriesMock
@@ -26,5 +31,7 @@ def get_images_repo() -> ImagesRepo:
     return ImagesMock()
 
 
-def get_embedding_repo() -> EmbeddingRepo:
-    return EmbeddingClient()
+def get_embedding_repo(
+    settings: Annotated[ClientSettings, Depends(ClientSettings)]
+) -> EmbeddingRepo:
+    return EmbeddingClient.from_env(settings)
