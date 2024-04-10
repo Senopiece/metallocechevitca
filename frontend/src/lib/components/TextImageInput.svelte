@@ -3,7 +3,7 @@
 		MultimodalSelectedFile,
 		MultimodalSelectedText
 	} from '$lib/structs/MultimodalSelect';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	let text = '';
 	let imageFile: File | null = null;
 	let imagePreviewUrl: null | string = null;
@@ -66,6 +66,10 @@
 		event.preventDefault();
 		isDraggingOver = false;
 	}
+
+	onMount(() => {
+		dispatch('selected', { type: 'text', value: '' });
+	});
 
 	$: if (text && inputMode === 'text') {
 		dispatch('selected', { type: 'text', value: text });

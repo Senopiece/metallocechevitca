@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 
 	const dispatch = createEventDispatcher<{ update: number }>();
 
@@ -22,6 +22,10 @@
 		// Dispatch the update event with the new value
 		dispatch('update', value);
 	}
+
+	onMount(() => {
+		dispatch('update', value);
+	});
 </script>
 
 <div>
