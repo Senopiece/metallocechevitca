@@ -6,6 +6,8 @@
 	import { getPlacesImpl } from '$lib/services/Places';
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
 	import type { MultimodalSelected } from '$lib/structs/MultimodalSelect';
+	import { goto } from '$app/navigation';
+	import { searchResultsStore } from '$lib/services/SearchResultStore';
 
 	const placesapi = getPlacesImpl();
 
@@ -44,13 +46,17 @@
 			return;
 		}
 
+		let searchResult; // This should be either SearchResultsStoreImage or SearchResultsStoreText based on API call
+
 		if (selected.type === 'text') {
-			const searchResult = await placesapi.searchText(selected.value, selectedOptionsIds, limit);
-			console.log(searchResult);
+			searchResult = await placesapi.searchText(selected.value, selectedOptionsIds, limit);
+			searchResultsStore.set({ type: 'text', res: searchResult });
 		} else if (selected.type === 'image') {
-			const searchResult = await placesapi.searchImage(selectedOptionsIds, selected.file, limit);
-			console.log(searchResult);
+			searchResult = await placesapi.searchImage(selectedOptionsIds, selected.file, limit);
+			searchResultsStore.set({ type: 'image', image: selected.file, res: searchResult });
 		}
+
+		goto('/searchResults');
 	}
 
 	onMount(async () => {
