@@ -1,0 +1,9 @@
+services:
+  model-server:
+    container_name: model-server
+    build: .
+    ports:
+      - "9069:8000"
+      - "8265:8265"
+    environment:
+      RAY_ADDRESS: 0.0.0.0:8000
