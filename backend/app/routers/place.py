@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.dependencies import get_places_repo
 from app.models.common import XID
@@ -14,4 +14,7 @@ router = APIRouter(prefix="/place")
 async def get_place_info(
     xid: XID, repo: Annotated[PlacesRepo, Depends(get_places_repo)]
 ) -> PlaceInfo:
-    return repo.get_place_info(xid)
+    result = repo.get_place_info(xid)
+    if result is not None:
+        return result
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)

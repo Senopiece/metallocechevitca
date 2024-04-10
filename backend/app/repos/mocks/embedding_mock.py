@@ -1,6 +1,6 @@
 from fastapi import UploadFile
 
-from app.models.common import Embedding, NonEmptyString, EMB_VECTOR_DIM
+from app.models.common import EMB_VECTOR_DIM, Embedding, NonEmptyString
 from app.repos.embedding_repo import EmbeddingRepo
 
 

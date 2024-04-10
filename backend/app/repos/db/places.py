@@ -17,32 +17,34 @@ class PlacesDB(PlacesRepo):
     def __init__(self, milvus_uri: str) -> None:
         connections.connect(uri=milvus_uri)
         self.emb_collection: Collection = self._create_emb_collection()
-        self.info_collection: Collection = None #self._get_info_collection()
+        self.emb_collection.load()
 
     def _create_emb_collection(self) -> Collection:
-        primary_key = FieldSchema("XID", dtype=DataType.STRING, is_primary=True)
+        primary_key = FieldSchema(
+            "XID", dtype=DataType.VARCHAR, is_primary=True, max_length=128
+        )
         embedding = FieldSchema(
             self.EMBEDDING_FIELD, dtype=DataType.FLOAT_VECTOR, dim=EMB_VECTOR_DIM
         )
         city_id = FieldSchema("city_id", dtype=DataType.INT64)
-        xid = FieldSchema(name="name", dtype=DataType.STRING)
+        xid = FieldSchema(name="name", dtype=DataType.VARCHAR, max_length=512)
         lat = FieldSchema(name="lat", dtype=DataType.FLOAT)
         lon = FieldSchema(name="lon", dtype=DataType.FLOAT)
+        category = FieldSchema("category", dtype=DataType.VARCHAR, max_length=128)
+        images = FieldSchema("images", dtype=DataType.JSON)
 
         schema = CollectionSchema(
-            fields=[primary_key, embedding, city_id, xid, lat, lon]
+            fields=[primary_key, embedding, city_id, xid, lat, lon, category, images]
         )
-        return Collection(name=self.EMB_COLLECTION_NAME, schema=schema)
-
-    def _create_info_collection(self) -> Collection:
-        primary_key = FieldSchema("XID", dtype=DataType.STRING, is_primary=True)
-        category = FieldSchema("category", dtype=DataType.STRING)
-        images = FieldSchema("images", dtype=...)  # TODO
-
-        schema = CollectionSchema(
-            fields=[primary_key, category, images]
+        collection = Collection(name=self.EMB_COLLECTION_NAME, schema=schema)
+        collection.create_index(
+            self.EMBEDDING_FIELD,
+            {
+                "index_type": "FLAT",  # maybe use other index?
+                "metric_type": self.METRIC_TYPE,
+            },
         )
-        return Collection(name=self.INFO_COLLECTION_NAME, schema=schema)
+        return collection
 
     @classmethod
     def from_env(cls) -> Self:
@@ -51,7 +53,7 @@ class PlacesDB(PlacesRepo):
     def get_most_similar_places(
         self, embedding: Embedding, limit: ResponseLimit, filter_by_areas: list[AreaID]
     ) -> list[PlacePrediction]:
-        result = self.emb_collection.search_iterator(
+        result = self.emb_collection.search(
             [embedding],
             self.EMBEDDING_FIELD,
             param={"metric_type": self.METRIC_TYPE},
@@ -68,10 +70,12 @@ class PlacesDB(PlacesRepo):
                 latitude=hit.get("lat"),
                 city_id=hit.get("city_id"),
             )
-            for hit in result
+            for hits in result
+            for hit in hits
         ]
 
     def get_place_info(self, xid: XID) -> PlaceInfo:
-        result = self.info_collection.query_iterator(expr=f"XID='{xid}'")
-        hit = next(result, None)
-        return PlaceInfo(category=hit.get("category"), images=hit.get("images"))
+        result = self.emb_collection.query(expr=f"XID=='{xid}'")
+        if result:
+            hit = result[0]
+            return PlaceInfo(category=hit.get("category"), images=hit.get("images"))
