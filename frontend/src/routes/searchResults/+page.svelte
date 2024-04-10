@@ -24,8 +24,7 @@
 		{#if searchResults.type === 'text'}
 			{#each searchResults.res.places as place}
 				<div>
-					<h2>{place.Name}</h2>
-					<!-- Display other place details -->
+					<h2>{place.Name} : {place.probability}</h2>
 				</div>
 			{/each}
 		{:else}

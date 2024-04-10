@@ -15,7 +15,6 @@ export interface ImageQueryResponse {
 
 export interface PlaceInfo {
 	category: string;
-	city_id: number;
 	images: number[];
 }
 
@@ -24,6 +23,7 @@ export interface PlacePrediction {
 	Name: string;
 	Lon: number;
 	Lat: number;
+	city_id: number;
 	probability: number;
 }
 
