@@ -17,23 +17,21 @@
 
 <main>
 	{#if searchResults}
-		<h1>Результаты поиска</h1>
+		<h1>Загруженное изображение</h1>
 		{#if searchResults?.type === 'image'}
 			<img src={imageUrl} alt="Search image" />
-		{/if}
-		{#if searchResults.type === 'text'}
-			{#each searchResults.res.places as place}
+			{#each searchResults.res.categories as category}
 				<div>
-					<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
-				</div>
-			{/each}
-		{:else}
-			{#each searchResults.res.places as place}
-				<div>
-					<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
+					<h2>{category.category} : {category.probability}</h2>
 				</div>
 			{/each}
 		{/if}
+		<h1>Результаты поиска</h1>
+		{#each searchResults.res.places as place}
+			<div>
+				<h2><a href="/place/{place.XID}">{place.Name} : {place.probability}</a></h2>
+			</div>
+		{/each}
 	{:else}
 		<p>No search results to display.</p>
 	{/if}
