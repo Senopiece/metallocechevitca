@@ -7,3 +7,5 @@ export interface MultimodalSelectedFile {
 	type: 'image';
 	file: File;
 }
+
+export type MultimodalSelected = MultimodalSelectedText | MultimodalSelectedFile;

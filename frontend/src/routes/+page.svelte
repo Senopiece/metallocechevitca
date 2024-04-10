@@ -5,20 +5,17 @@
 	import MultiChoiceDropdown from '$lib/components/MultiChoiceDropdown.svelte';
 	import { getPlacesImpl } from '$lib/services/Places';
 	import type { DropdownElem } from '$lib/structs/DropdownElem';
-	import type {
-		MultimodalSelectedFile,
-		MultimodalSelectedText
-	} from '$lib/structs/MultimodalSelect';
+	import type { MultimodalSelected } from '$lib/structs/MultimodalSelect';
 
 	const placesapi = getPlacesImpl();
 
 	let initialOptions: DropdownElem[] | undefined;
 
 	let limit: number | undefined;
-	let selected: MultimodalSelectedText | MultimodalSelectedFile | undefined;
+	let selected: MultimodalSelected | undefined;
 	let selectedOptionsIds: number[] | undefined;
 
-	function handleSelect(event: CustomEvent<MultimodalSelectedText | MultimodalSelectedFile>) {
+	function handleSelect(event: CustomEvent<MultimodalSelected>) {
 		selected = event.detail;
 	}
 

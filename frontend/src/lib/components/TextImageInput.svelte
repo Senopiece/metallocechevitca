@@ -1,14 +1,11 @@
 <script lang="ts">
-	import type {
-		MultimodalSelectedFile,
-		MultimodalSelectedText
-	} from '$lib/structs/MultimodalSelect';
+	import type { MultimodalSelected } from '$lib/structs/MultimodalSelect';
 	import { createEventDispatcher, onMount } from 'svelte';
 	let text = '';
 	let imageFile: File | null = null;
 	let imagePreviewUrl: null | string = null;
 	const dispatch = createEventDispatcher<{
-		selected: MultimodalSelectedText | MultimodalSelectedFile;
+		selected: MultimodalSelected;
 	}>();
 	let inputMode = 'image'; // Possible values: 'text', 'image'
 	let isDraggingOver = false; // Tracks drag state
