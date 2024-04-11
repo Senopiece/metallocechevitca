@@ -18,8 +18,9 @@ COPY poetry.lock pyproject.toml /code/
 RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-interaction --no-ansi
 
 COPY ./app /code/app
+COPY ./serve-config.yaml /code
 
 EXPOSE 8000
 EXPOSE 8265
 
-CMD ["serve", "start", "app.model_server:embedding_model", "--http-host", "0.0.0.0"]
+CMD ["sh" , "-c", "ray start --dashboard-host 0.0.0.0 --head && serve run serve-config.yaml"]
