@@ -7,5 +7,4 @@ class ImageQueryResponse(TextQueryResponse):
     categories: list[CategoryPrediction]
 
 
-class ImageQueryRequest(QueryRequest):
-    ...
+class ImageQueryRequest(QueryRequest): ...
