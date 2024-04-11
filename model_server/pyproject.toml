@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.11"
 ray = {extras = ["serve"], version = "^2.10.0"}
 pillow = "^10.3.0"
+sentence-transformers = "^2.6.1"
 
 
 [build-system]
