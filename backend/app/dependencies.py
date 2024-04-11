@@ -3,7 +3,6 @@ from app.repos.areas_repo import AreasRepo
 from app.repos.categories_repo import CategoriesRepo
 from app.repos.embedding_repo import EmbeddingRepo
 from app.repos.embeddings.client import EmbeddingClient
-from app.repos.file_storage.images import ImagesStorage
 from app.repos.images_repo import ImagesRepo
 from app.repos.mocks.areas_mock import AreasMock
 from app.repos.places_repo import PlacesRepo
@@ -24,7 +23,7 @@ def get_categories_repo() -> CategoriesRepo:
 
 
 def get_images_repo() -> ImagesRepo:
-    return ImagesStorage.from_env()
+    return app.images_repo
 
 
 def get_embedding_repo() -> EmbeddingRepo:

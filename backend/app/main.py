@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.repos.db.categories import CategoriesDB
 from app.repos.db.places import PlacesDB
+from app.repos.file_storage.images import ImagesStorage
 
 app = FastAPI()
 
@@ -27,3 +28,4 @@ def inject_repos() -> None:
 
     app.places_repo = PlacesDB.from_env()
     app.categories_repo = CategoriesDB.from_env()
+    app.images_repo = ImagesStorage.from_env()

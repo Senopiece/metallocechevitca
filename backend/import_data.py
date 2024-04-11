@@ -24,11 +24,12 @@ async def post_place(session: aiohttp.ClientSession, row: pd.Series):
             raise Exception(await response.json())
 
 
-async def post_image(session: aiohttp.ClientSession, xid: str, image: str):
-    async with session.post(IMAGE_ENDPOINT.format(xid=xid),
-                            data={"image": image_from_base64(image)}) as response:
-        if response.status >= 400:
-            raise Exception(await response.json())
+async def post_image(semaphore: asyncio.Semaphore, session: aiohttp.ClientSession, xid: str, image: str):
+    async with semaphore:
+        async with session.post(IMAGE_ENDPOINT.format(xid=xid),
+                                data={"image": image_from_base64(image)}) as response:
+            if response.status >= 400:
+                raise Exception(await response.json())
 
 
 async def post_category(session: aiohttp.ClientSession, row: pd.Series):
@@ -46,6 +47,7 @@ async def flush(session: aiohttp.ClientSession):
 
 
 async def main():
+    semaphore = asyncio.Semaphore(10)
     async with aiohttp.ClientSession() as session:
         categories_tasks = []
         for index, row in categories.iterrows():
@@ -60,7 +62,7 @@ async def main():
         for index, row in preprocessed_places.iterrows():
             places_tasks.append(post_place(session, row))
             for image in eval(row["image"]):
-                images_tasks.append(post_image(session, row["XID"], image))
+                images_tasks.append(post_image(semaphore, session, row["XID"], image))
 
         places_tasks.append(flush(session))
 
