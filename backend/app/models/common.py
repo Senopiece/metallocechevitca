@@ -12,7 +12,7 @@ from pydantic import (
 
 EMB_VECTOR_DIM = 512
 NonEmptyString = constr(min_length=1, max_length=255)
-Probability = confloat(ge=0, le=1)
+Probability = confloat(ge=-1, le=1)
 
 # TODO: define better
 XID = NonEmptyString
