@@ -17,6 +17,13 @@ class CategoriesDB(CategoriesRepo):
     METRIC_TYPE = "COSINE"
 
     def __init__(self, milvus_uri: str, flush_every_time: bool = False) -> None:
+        self.CAT_NAME_EN_TO_RU: dict[str, str] = {
+            "religion": "Религиозный объект",
+            "other": "Другое",
+            "memorial": "Памятник событию",
+            "statue": "Памятник личности",
+            "experience": "Экспириенс",
+        }
         connections.connect(uri=milvus_uri)
         self.collection: Collection = self._create_emb_collection()
         self.collection.load()
@@ -65,7 +72,10 @@ class CategoriesDB(CategoriesRepo):
         )
 
         return [
-            CategoryPrediction(category=hit.get("category"), probability=hit.distance)
+            CategoryPrediction(
+                category=self.CAT_NAME_EN_TO_RU.get(hit.get("category"), "Другое"),
+                probability=hit.distance,
+            )
             for hits in result
             for hit in hits
         ]
