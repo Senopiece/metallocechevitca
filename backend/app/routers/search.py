@@ -22,11 +22,11 @@ async def optimal_route_for_cities(route_optimizer: RouteOptimizer, places: List
     # split by cities
     c2ps = defaultdict(lambda: [])
     for place in places:
-        c2ps[place.xid].append(place)
+        c2ps[place.city_id].append(LatLon(Lat=place.latitude, Lon=place.longitude))
     
     # for each city try to find optimal path and return first found
-    for city, places in c2ps:
-        optimal_route = await route_optimizer.get_route(list(map(lambda p: LatLon(Lat=p.latitude, Lon=p.longitude), places)))
+    for path in c2ps.values():
+        optimal_route = await route_optimizer.get_route(path)
 
         if optimal_route is not None:
             return optimal_route

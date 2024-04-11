@@ -11,6 +11,7 @@ from app.repos.mocks.places_mock import PlacesMock
 from app.repos.places_repo import PlacesRepo
 from app.repos.route_optimizer import RouteOptimizer
 from app.repos.route_optimizers.manhettan import ManhettanRouteOptimizer
+from app.repos.mocks.embedding_mock import EmbeddingMock
 
 
 def get_areas_repo() -> AreasRepo:
