@@ -19,7 +19,7 @@ class EmbeddingClient(EmbeddingRepo):
     async def get_image_embedding(self, image: UploadFile) -> Embedding:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                self.url + "/image-embedding",
+                self.url + "image-embedding",
                 files={"image": image.file},
             )
             response.raise_for_status()
@@ -28,7 +28,7 @@ class EmbeddingClient(EmbeddingRepo):
     async def get_text_embedding(self, text_query: NonEmptyString) -> Embedding:
         async with httpx.AsyncClient() as client:
             response = await client.post(
-                self.url + "/text-embedding",
+                self.url + "text-embedding",
                 json={"text_query": text_query},
             )
             response.raise_for_status()

@@ -49,7 +49,7 @@ async def search_by_text(
     embedding_repo: Annotated[EmbeddingRepo, Depends(get_embedding_repo)],
     route_optimizer: Annotated[RouteOptimizer, Depends(get_route_optimizer_repo)],
 ) -> TextQueryResponse:
-    text_emb = embedding_repo.get_text_embedding(text_query.query)
+    text_emb = await embedding_repo.get_text_embedding(text_query.query)
     places = places_repo.get_most_similar_places(
         text_emb, text_query.places_limit, text_query.areas_id
     )
@@ -68,7 +68,7 @@ async def search_by_image(
     embedding_repo: Annotated[EmbeddingRepo, Depends(get_embedding_repo)],
     route_optimizer: Annotated[RouteOptimizer, Depends(get_route_optimizer_repo)],
 ) -> ImageQueryResponse:
-    image_emb = embedding_repo.get_image_embedding(image_file)
+    image_emb = await embedding_repo.get_image_embedding(image_file)
     places = places_repo.get_most_similar_places(
         image_emb, image_query.places_limit, image_query.areas_id
     )
