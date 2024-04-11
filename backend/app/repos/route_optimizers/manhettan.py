@@ -1,5 +1,6 @@
-from typing import List
 import math
+from typing import List
+
 from app.models.latlon import LatLon
 from app.repos.route_optimizer import RouteOptimizer
 
@@ -27,16 +28,20 @@ class ManhettanRouteOptimizer(RouteOptimizer):
             last_index = points.index(route[-1])
             last_point_in_km = points_in_km[last_index]
             nearest_point_index = None
-            min_distance = float('inf')
+            min_distance = float("inf")
 
             for i, point in enumerate(points_in_km):
                 if i not in visited:
-                    distance = abs(last_point_in_km[0] - point[0]) + abs(last_point_in_km[1] - point[1])
+                    distance = abs(last_point_in_km[0] - point[0]) + abs(
+                        last_point_in_km[1] - point[1]
+                    )
                     if distance < min_distance:
                         min_distance = distance
                         nearest_point_index = i
 
-            if nearest_point_index is not None and (total_distance + min_distance <= 15):
+            if nearest_point_index is not None and (
+                total_distance + min_distance <= 15
+            ):
                 total_distance += min_distance
                 visited.add(nearest_point_index)
                 route.append(points[nearest_point_index])
@@ -45,5 +50,5 @@ class ManhettanRouteOptimizer(RouteOptimizer):
 
         if len(route) <= 1:
             return None
-        
+
         return route

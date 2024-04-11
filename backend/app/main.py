@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.repos.db.categories import CategoriesDB
 from app.repos.db.places import PlacesDB
 
 app = FastAPI()
@@ -25,3 +26,4 @@ def inject_repos() -> None:
     app.include_router(upload.router)
 
     app.places_repo = PlacesDB.from_env()
+    app.categories_repo = CategoriesDB.from_env()

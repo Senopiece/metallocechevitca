@@ -26,7 +26,7 @@ def get_places_repo() -> PlacesRepo:
 
 
 def get_categories_repo() -> CategoriesRepo:
-    return CategoriesMock()
+    return app.categories_repo
 
 
 def get_images_repo() -> ImagesRepo:

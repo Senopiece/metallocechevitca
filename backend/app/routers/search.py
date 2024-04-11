@@ -5,7 +5,12 @@ from typing import Annotated, List
 
 from fastapi import APIRouter, Depends, UploadFile
 
-from app.dependencies import get_categories_repo, get_embedding_repo, get_places_repo, get_route_optimizer_repo
+from app.dependencies import (
+    get_categories_repo,
+    get_embedding_repo,
+    get_places_repo,
+    get_route_optimizer_repo,
+)
 from app.models.image_query import ImageQueryRequest, ImageQueryResponse
 from app.models.latlon import LatLon
 from app.models.place import PlacePrediction
@@ -18,19 +23,21 @@ from app.repos.route_optimizer import RouteOptimizer
 router = APIRouter(prefix="/search")
 
 
-async def optimal_route_for_cities(route_optimizer: RouteOptimizer, places: List[PlacePrediction]):
+async def optimal_route_for_cities(
+    route_optimizer: RouteOptimizer, places: List[PlacePrediction]
+):
     # split by cities
     c2ps = defaultdict(lambda: [])
     for place in places:
         c2ps[place.city_id].append(LatLon(Lat=place.latitude, Lon=place.longitude))
-    
+
     # for each city try to find optimal path and return first found
     for path in c2ps.values():
         optimal_route = await route_optimizer.get_route(path)
 
         if optimal_route is not None:
             return optimal_route
-    
+
     # All cities have no feasible route
     return None
 
@@ -48,7 +55,7 @@ async def search_by_text(
     )
     return TextQueryResponse(
         places=places,
-        optimal_route=await optimal_route_for_cities(route_optimizer, places)
+        optimal_route=await optimal_route_for_cities(route_optimizer, places),
     )
 
 
@@ -62,7 +69,7 @@ async def search_by_image(
     route_optimizer: Annotated[RouteOptimizer, Depends(get_route_optimizer_repo)],
 ) -> ImageQueryResponse:
     image_emb = embedding_repo.get_image_embedding(image_file)
-    places=places_repo.get_most_similar_places(
+    places = places_repo.get_most_similar_places(
         image_emb, image_query.places_limit, image_query.areas_id
     )
     return ImageQueryResponse(

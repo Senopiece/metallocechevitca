@@ -6,10 +6,7 @@ from app.models.latlon import LatLon
 
 class RouteOptimizer(ABC):
     @abstractmethod
-    def get_route(
-        self,
-        points: list[LatLon]
-    ) -> Awaitable[list[LatLon] | None]:
+    def get_route(self, points: list[LatLon]) -> Awaitable[list[LatLon] | None]:
         """
         Returns optimal route under 3h as subset from the given points
         order of given points does not matter, but the order of the resulting points matters
