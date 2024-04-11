@@ -13,4 +13,5 @@ KNOWN_AREAS = [
     Area(id=2, name="Ярославль"),
     Area(id=3, name="Владимир"),
     Area(id=4, name="Екатеринбург"),
+    Area(id=5, name="Воронеж")
 ]
