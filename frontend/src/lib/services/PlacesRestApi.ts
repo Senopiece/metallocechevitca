@@ -35,11 +35,9 @@ export class PlacesRestApi implements Places {
 		const response = await this.axiosInstance.put<ImageQueryResponse>('/search/image/', formData, {
 			params: {
 				places_limit: placesLimit,
-				// Passing array parameters in queries with Axios correctly formats them for the server
-				'areas_id[]': areasId
+				areas_id: areasId
 			}
 		});
-
 		return response.data;
 	}
 

@@ -1,5 +1,8 @@
+volumes/
+
 # Created by https://www.toptal.com/developers/gitignore/api/python,visualstudiocode,intellij
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,visualstudiocode,intellij
+
 
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider
