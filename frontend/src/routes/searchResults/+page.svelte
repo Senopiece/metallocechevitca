@@ -11,8 +11,14 @@
 	let mapContainer; // DOM element to bind the map
 	let searchResults: SearchResultsStore | null;
 
+	let imageUrl: string;
+
 	searchResultsStore.subscribe(($searchResults) => {
 		searchResults = $searchResults;
+
+		if (searchResults?.type === 'image') {
+			imageUrl = URL.createObjectURL(searchResults.image);
+		}
 	});
 
 	onMount(() => {
@@ -57,6 +63,15 @@
 
 <main>
 	{#if searchResults}
+		{#if searchResults?.type === 'image'}
+			<h1>Загруженное изображение</h1>
+			<img src={imageUrl} alt="Search image" />
+			{#each searchResults.res.categories as category}
+				<div>
+					<h2>{category.category} : {category.probability}</h2>
+				</div>
+			{/each}
+		{/if}
 		<h1>Результаты поиска</h1>
 		<div bind:this={mapContainer} class="map"></div>
 	{:else}
