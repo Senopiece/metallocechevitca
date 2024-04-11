@@ -7,7 +7,6 @@
 	let value = maxLimit;
 
 	function updateValue(event: any) {
-		// Use a type assertion to tell TypeScript the target is an input element
 		let inputElement = event.target as HTMLInputElement;
 		let inputValue = +inputElement.value;
 
@@ -19,7 +18,6 @@
 			value = inputValue;
 		}
 
-		// Dispatch the update event with the new value
 		dispatch('update', value);
 	}
 
@@ -28,7 +26,44 @@
 	});
 </script>
 
-<div>
+<div class="input-container">
 	<span>Лимит: </span>
 	<input type="number" bind:value on:input={updateValue} />
 </div>
+
+<style>
+	.input-container {
+		display: flex;
+		align-items: center;
+		font-family: sans-serif;
+		color: #333;
+	}
+
+	.input-container > span {
+		margin-right: 8px;
+	}
+
+	input[type='number'] {
+		outline: none;
+		border: none;
+		background-color: transparent;
+		padding: 8px 0;
+		font-size: 16px;
+		width: 40px;
+		color: inherit;
+		-webkit-appearance: textfield;
+		overflow: hidden; /* Might want to hide overflow if the value is wider than the input */
+	}
+
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number']::-webkit-outer-spin-button,
+	input[type='number']::-moz-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
+
+	input[type='number']:focus {
+		border: none;
+		box-shadow: none;
+	}
+</style>

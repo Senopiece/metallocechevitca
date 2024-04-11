@@ -71,18 +71,42 @@
 
 <main>
 	<TextImageInput on:selected={handleSelect} />
-	{#if initialOptions === undefined}
-		<p>Загрузка...</p>
-	{:else}
-		<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
-	{/if}
-	<LimitNumberInput on:update={handleUpdate} />
+	<div class="inputs-row">
+		{#if initialOptions === undefined}
+			<p>Загрузка...</p>
+		{:else}
+			<MultiChoiceDropdown options={initialOptions} on:selected={handleSelectedOptions} />
+		{/if}
+		<LimitNumberInput on:update={handleUpdate} />
+	</div>
 	<button on:click={handleSubmit}>Искать</button>
 </main>
 
 <style>
 	main {
+		display: flex;
+		flex-direction: column;
+		justify-content: center; /* Center vertically */
+		align-items: center; /* Center horizontally */
+		min-height: 100vh; /* Full height of the viewport */
 		padding: 1rem;
 		font-family: Arial, sans-serif;
+	}
+
+	.inputs-row {
+		display: flex;
+		justify-content: space-around; /* Adjust this as needed */
+		align-items: center; /* Centers items vertically within the row */
+		width: 100%;
+		max-width: 600px; /* Adjust based on your design */
+		margin: 1rem 0; /* Adds margin around the row for spacing */
+	}
+
+	button {
+		margin-top: 1rem;
+	}
+
+	p {
+		text-align: center;
 	}
 </style>
