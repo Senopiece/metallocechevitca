@@ -17,6 +17,7 @@ COPY poetry.lock pyproject.toml /code/
 
 RUN poetry install $(test "$YOUR_ENV" == production && echo "--only=main") --no-interaction --no-ansi
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/clip-ViT-B-32-multilingual-v1'); SentenceTransformer('clip-ViT-B-32')"
+RUN pip install python-multipart
 
 COPY ./app /code/app
 COPY ./serve-config.yaml /code

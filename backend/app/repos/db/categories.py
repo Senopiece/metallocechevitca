@@ -1,7 +1,6 @@
 from typing import Self
 
 from pymilvus import Collection, CollectionSchema, DataType, FieldSchema, connections
-from pymilvus.orm.constants import UNLIMITED
 
 from app.models.category import CategoryInput, CategoryPrediction
 from app.models.common import EMB_VECTOR_DIM, Embedding
@@ -59,12 +58,13 @@ class CategoriesDB(CategoriesRepo):
             self.EMBEDDING_FIELD,
             param={"metric_type": self.METRIC_TYPE},
             output_fields=["category"],
-            limit=UNLIMITED,
+            limit=max(self.collection.num_entities, 1),
         )
 
         return [
             CategoryPrediction(name=hit.get("name"), probability=hit.distance)
-            for hit in result
+            for hits in result
+            for hit in hits
         ]
 
     def add_category(self, category: CategoryInput) -> bool:

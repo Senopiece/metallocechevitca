@@ -18,7 +18,9 @@ class TextEmbeddingModel:
         self.text_model = SentenceTransformer(
             "sentence-transformers/clip-ViT-B-32-multilingual-v1"
         )
-        self.adapter = Adapter().load_state_dict(torch.load("app/adapter.pt", map_location=device))
+        self.adapter = Adapter()
+        self.adapter.load_state_dict(torch.load("app/adapter.pt", map_location=device))
+        self.adapter.eval()
 
     async def __call__(self, starlette_request: Request) -> list[float]:
         payload = await starlette_request.json()
@@ -32,8 +34,8 @@ class ImageEmbeddingModel:
         self.image_model = SentenceTransformer("clip-ViT-B-32")
 
     async def __call__(self, starlette_request: Request) -> list[float]:
-        image_payload_bytes = await starlette_request.body()
-        pil_image = Image.open(BytesIO(image_payload_bytes))
+        payload = await starlette_request.form()
+        pil_image = Image.open(payload["image"].file)
         return self.image_model.encode(pil_image).tolist()
 
 
