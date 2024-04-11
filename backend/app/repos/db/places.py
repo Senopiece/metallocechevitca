@@ -26,7 +26,6 @@ class PlacesDB(PlacesRepo):
         self.collection: Collection = self._create_emb_collection()
         self.collection.load()
         self.flush_every_time = flush_every_time
-        assert self.flush_every_time
 
     def exists_place(self, xid: XID) -> bool:
         return self._get_by_xid(xid, ["XID"]) is not None
