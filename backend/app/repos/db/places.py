@@ -16,6 +16,9 @@ from app.repos.places_repo import PlacesRepo
 
 
 class PlacesDB(PlacesRepo):
+    def force_flush(self) -> None:
+        self.collection.flush()
+
     EMB_COLLECTION_NAME = "place_emb"
     INFO_COLLECTION_NAME = "place_info"
     METRIC_TYPE = "COSINE"

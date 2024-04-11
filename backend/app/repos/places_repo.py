@@ -23,7 +23,11 @@ class PlacesRepo(ABC):
         return NotImplemented
 
     @abstractmethod
-    def upload_place(self, place_data: PlaceInput) -> bool: ...
+    def upload_place(self, place_data: PlaceInput) -> bool:
+        return NotImplemented
 
     @abstractmethod
     def add_place_image(self, xid: XID, image_id: ImageID) -> None: ...
+
+    @abstractmethod
+    def force_flush(self) -> None: ...

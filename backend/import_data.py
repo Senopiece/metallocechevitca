@@ -34,7 +34,13 @@ async def post_image(session: aiohttp.ClientSession, xid: str, image: str):
 async def post_category(session: aiohttp.ClientSession, row: pd.Series):
     payload = row.to_dict()
     payload["embedding"] = eval(payload["embedding"])
-    async with session.post(PLACE_ENDPOINT, json=payload) as response:
+    async with session.post(CATEGORY_ENDPOINT, json=payload) as response:
+        if response.status >= 400:
+            raise Exception(await response.json())
+
+
+async def flush(session: aiohttp.ClientSession):
+    async with session.post(API_ENDPOINT + "/flush") as response:
         if response.status >= 400:
             raise Exception(await response.json())
 
@@ -45,14 +51,18 @@ async def main():
         for index, row in categories.iterrows():
             categories_tasks.append(post_category(session, row))
 
+        categories_tasks.append(flush(session))
+
         await tqdm_asyncio.gather(*categories_tasks, desc="Categories")
 
         places_tasks = []
         images_tasks = []
-        for index, row in preprocessed_places.sample(2).iterrows():
+        for index, row in preprocessed_places.iterrows():
             places_tasks.append(post_place(session, row))
             for image in eval(row["image"]):
                 images_tasks.append(post_image(session, row["XID"], image))
+
+        places_tasks.append(flush(session))
 
         await tqdm_asyncio.gather(*places_tasks, desc="Places")
         await tqdm_asyncio.gather(*images_tasks, desc="Images")
@@ -61,6 +71,7 @@ async def main():
 if __name__ == '__main__':
     print("Loading data...")
     categories = pd.read_csv("categories.csv")
-    preprocessed_places = pd.read_csv("preprocessed.csv").rename(columns={"embeddings": "embedding"})
+    preprocessed_places = pd.read_csv("preprocessed.csv").rename(
+        columns={"embeddings": "embedding"})
     print("Loaded!")
     asyncio.run(main())

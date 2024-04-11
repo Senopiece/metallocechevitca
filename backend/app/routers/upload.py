@@ -42,3 +42,11 @@ async def upload_category(
 ) -> None:
     if not category_repo.add_category(category_data):
         raise HTTPException(status.HTTP_409_CONFLICT)
+
+
+@router.post("/flush")
+async def force_flush(
+    category_repo: Annotated[CategoriesRepo, Depends(get_categories_repo)],
+    place_repo: Annotated[PlacesRepo, Depends(get_places_repo)],
+):
+    category_repo

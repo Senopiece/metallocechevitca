@@ -7,6 +7,8 @@ from app.repos.places_repo import PlacesRepo
 
 class PlacesMock(PlacesRepo):
 
+    def force_flush(self) -> None: ...
+
     def __init__(self):
         self.XID_TO_INFO: dict[XID, PlaceInfo] = {
             "N555": PlaceInfo(category="памятник", images=[uuid.uuid4(), uuid.uuid4()]),

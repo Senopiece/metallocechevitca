@@ -9,6 +9,9 @@ from app.repos.db.settings import settings
 
 
 class CategoriesDB(CategoriesRepo):
+    def force_flush(self) -> None:
+        self.collection.flush()
+
     EMB_COLLECTION_NAME = "category_emb"
     EMBEDDING_FIELD = "embedding"
     METRIC_TYPE = "COSINE"

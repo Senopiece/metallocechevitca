@@ -14,3 +14,6 @@ class CategoriesRepo(ABC):
     @abstractmethod
     def add_category(self, category: CategoryInput) -> bool:
         return NotImplemented
+
+    @abstractmethod
+    def force_flush(self) -> None: ...
