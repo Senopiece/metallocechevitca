@@ -13,6 +13,8 @@ from app.repos.mocks.areas_mock import AreasMock
 from app.repos.mocks.categories_mock import CategoriesMock
 from app.repos.mocks.images_mock import ImagesMock
 from app.repos.places_repo import PlacesRepo
+from app.repos.route_optimizer import RouteOptimizer
+from app.repos.route_optimizers.manhettan import ManhettanRouteOptimizer
 
 
 def get_areas_repo() -> AreasRepo:
@@ -35,3 +37,7 @@ def get_embedding_repo(
     settings: Annotated[ClientSettings, Depends(ClientSettings)]
 ) -> EmbeddingRepo:
     return EmbeddingClient.from_env(settings)
+
+
+def get_route_optimizer_repo() -> RouteOptimizer:
+    return ManhettanRouteOptimizer()
