@@ -1,0 +1,9 @@
+node_modules
+.eslint*
+.prettier*
+.vscode
+README.md
+Dockerfile*
+public
+.svelte-kit
+build
