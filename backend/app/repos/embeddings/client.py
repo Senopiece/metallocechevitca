@@ -5,7 +5,7 @@ from fastapi import UploadFile
 
 from app.models.common import Embedding, NonEmptyString
 from app.repos.embedding_repo import EmbeddingRepo
-from app.repos.embeddings.settings import ClientSettings
+from app.repos.embeddings.settings import ClientSettings, settings
 
 
 class EmbeddingClient(EmbeddingRepo):
@@ -13,7 +13,7 @@ class EmbeddingClient(EmbeddingRepo):
         self.url = url
 
     @classmethod
-    def from_env(cls, settings: ClientSettings) -> Self:
+    def from_env(cls) -> Self:
         return cls(url=str(settings.url))
 
     async def get_image_embedding(self, image: UploadFile) -> Embedding:

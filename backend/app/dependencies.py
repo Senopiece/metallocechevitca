@@ -33,10 +33,8 @@ def get_images_repo() -> ImagesRepo:
     return ImagesMock()
 
 
-def get_embedding_repo(
-    settings: Annotated[ClientSettings, Depends(ClientSettings)]
-) -> EmbeddingRepo:
-    return EmbeddingClient.from_env(settings)
+def get_embedding_repo() -> EmbeddingRepo:
+    return EmbeddingClient.from_env()
 
 
 def get_route_optimizer_repo() -> RouteOptimizer:
