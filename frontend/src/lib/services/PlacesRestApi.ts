@@ -38,7 +38,6 @@ export class PlacesRestApi implements Places {
 				areas_id: areasId
 			}
 		});
-
 		return response.data;
 	}
 
