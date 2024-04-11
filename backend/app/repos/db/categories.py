@@ -65,7 +65,7 @@ class CategoriesDB(CategoriesRepo):
         )
 
         return [
-            CategoryPrediction(name=hit.get("name"), probability=hit.distance)
+            CategoryPrediction(category=hit.get("category"), probability=hit.distance)
             for hits in result
             for hit in hits
         ]
