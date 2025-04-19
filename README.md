@@ -1,4 +1,6 @@
 # Решение задачи финала НТО по профилю "Технологии компьютерного зрения"
+Презентация доступна по [ссылке](https://docs.google.com/presentation/d/1aiQMQUYPiwoRNeICXUvPpwkliXa5mqcb_5MDcfmdRgw/edit?usp=sharing).
+
 ## Dockerized
 
 ### Using docker-compose
